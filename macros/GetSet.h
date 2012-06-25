@@ -40,4 +40,10 @@ inline const typeName& Get##funcNameSuffix() const {\
     return (memberName); \
 }
 
+#define STATIC_MEMBER_STRING(memberName, memberValue)\
+inline static string memberName() {\
+    static string __value(memberValue);\
+    return __value;\
+}
+
 #endif // GETSET_H_
