@@ -2,7 +2,9 @@
 #define DOF_LIB_STR_STRING_LIB_H_
 
 #include "CommonHeader.h"
+#include "ParseBase.h"
 using namespace std;
+using namespace dof::parse;
 
 namespace dof {
 namespace lib {
@@ -134,5 +136,47 @@ bool StringToCollectionEscape(const string& s, TCollection& output, char sep='+'
 }; // namespace string
 }; // namespace lib
 }; // namespace dof
+
+template<typename TOutputIterator>
+bool OutputSeparateString(const string& s, TOutputIterator out, char sep='+') {
+    int l=s.length();
+    if(0 == l) {
+	return true;
+    }
+    int p,q=0;
+    p = (sep == s[0]) ? 1 : 0;
+    while(q < l) {
+	q = ScanNNext(s, p, sep, 1);
+	if(q > l) {
+	    return false;
+	}
+	*out = s.substr(p,q-p);
+	++out;
+	p = q+1;
+    }
+    return true;
+}
+
+// 把分割元素的字符串转化成集合
+// 如果操作失败，会清空输出集合
+template<typename TCollection>
+bool StringToCollection(const string& s, TCollection& output, char sep='+', bool isReset=true) {
+    if(isReset) { output.clear(); }
+
+    bool isSuccess = OutputSeparateString(s, inserter(output, output.end()), sep);
+    if(!isSuccess) { output.clear(); }
+    return isSuccess;
+}
+
+// (1:a,2:b,3:c,4:d) => +1^a+2^b+3^c+4^d
+template<typename K, typename V>
+string MapToString(const map<K,V>& target, char sep='+', char kvSep='^') {
+    stringstream ss;
+    typedef typename map<K,V>::const_iterator TMapCIter;
+    for(TMapCIter it=target.begin();it!=target.end();++it) {
+	ss << sep << it->first << kvSep << it->second;
+    }
+    return ss.str();
+}
 
 #endif // DOF_LIB_STR_STRING_LIB_H_

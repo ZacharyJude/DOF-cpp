@@ -195,11 +195,116 @@ void TestAppendSuffix() {
     DOF_UT_CHECK( "" == AppendSuffix<13>("xxxxxxx", "dddddd") );
 }
 
+void TestStringToCollection() {
+    string s;
+    set<string> setOutput;
+    vector<string> vecOutput;
+    bool isSuccess;
+
+    s = "+a+abc+92";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 3 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("a") );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("abc") );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("92") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 3 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "a") );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "abc") );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "92") );
+
+    s = "a+abc+92";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 3 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("a") );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("abc") );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("92") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 3 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "a") );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "abc") );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "92") );
+
+    s = "aaaaaaa";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 1 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("aaaaaaa") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 1 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "aaaaaaa") );
+    
+    s = "";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 0 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() == setOutput.find("") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 0 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput.end() == find(vecOutput.begin(), vecOutput.end(), "") );
+    
+    s = "+";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 1 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 1 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput.end() != find(vecOutput.begin(), vecOutput.end(), "") );
+
+    s = "++";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 1 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 2 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput[0] == "" && vecOutput[1] == "" );
+
+    s = "+++34343";
+    isSuccess = StringToCollection(s, setOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 2 == setOutput.size() );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("") );
+    DOF_UT_CHECK( setOutput.end() != setOutput.find("34343") );
+
+    isSuccess = StringToCollection(s, vecOutput);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 3 == vecOutput.size() );
+    DOF_UT_CHECK( vecOutput[0] == "" && vecOutput[1] == "" && vecOutput[2] == "34343" );
+}
+
+void TestMapToString() {
+    map<string, int> m;
+    m["abc"] = 123;
+    m["xxxxxx"] = 868;
+    m[""] = 1000;
+    m["negative"] = -123;
+    
+    DOF_UT_OUT( MapToString(m) );
+}
+
 int main() {
     TestStrip();   
     TestToLowerAndToUpper();
     TestHex2Dec();
     TestStringToCollectionEscape();
     TestAppendSuffix();
+    TestStringToCollection();
+    TestMapToString();
     return 0;
 }
