@@ -133,10 +133,6 @@ bool StringToCollectionEscape(const string& s, TCollection& output, char sep='+'
     return isSuccess;
 }
 
-}; // namespace string
-}; // namespace lib
-}; // namespace dof
-
 template<typename TOutputIterator>
 bool OutputSeparateString(const string& s, TOutputIterator out, char sep='+') {
     int l=s.length();
@@ -178,5 +174,10 @@ string MapToString(const map<K,V>& target, char sep='+', char kvSep='^') {
     }
     return ss.str();
 }
+
+}; // namespace string
+}; // namespace lib
+}; // namespace dof
+
 
 #endif // DOF_LIB_STR_STRING_LIB_H_
