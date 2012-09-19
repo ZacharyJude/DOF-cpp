@@ -189,10 +189,17 @@ void TestStringToCollectionEscape() {
     DOF_UT_CHECK( vecOutput[5] == "\\\\abc" );
 }
 
+void TestAppendSuffix() {
+    DOF_UT_CHECK( "abc" == AppendSuffix<4096>("ab", "c") );
+    DOF_UT_CHECK( "xxxxxxxdddddd" == AppendSuffix<14>("xxxxxxx", "dddddd") );
+    DOF_UT_CHECK( "" == AppendSuffix<13>("xxxxxxx", "dddddd") );
+}
+
 int main() {
     TestStrip();   
     TestToLowerAndToUpper();
     TestHex2Dec();
     TestStringToCollectionEscape();
+    TestAppendSuffix();
     return 0;
 }

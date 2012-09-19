@@ -8,6 +8,16 @@ namespace dof {
 namespace lib {
 namespace str {
 
+template<int bufferSize>
+string AppendSuffix(const string& raw, const string& suffix) {
+    if(bufferSize <= raw.length() + suffix.length()) {
+	return "";
+    }
+    static char __buf[bufferSize] = {'\0'};
+    snprintf(__buf, raw.length() + suffix.length() + 1, "%s%s", raw.c_str(), suffix.c_str());
+    return string(__buf);
+}
+
 template<typename TOutputIterator>
 void StringToChars(const string& s, TOutputIterator out) {
     for(string::const_iterator it=s.begin();it!=s.end();++it) {
