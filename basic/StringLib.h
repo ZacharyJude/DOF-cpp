@@ -2,9 +2,7 @@
 #define DOF_LIB_STR_STRING_LIB_H_
 
 #include "CommonHeader.h"
-#include "ParseBase.h"
 using namespace std;
-using namespace dof::parse;
 
 namespace dof {
 namespace lib {
@@ -19,6 +17,18 @@ string AppendSuffix(const string& raw, const string& suffix) {
     snprintf(__buf, raw.length() + suffix.length() + 1, "%s%s", raw.c_str(), suffix.c_str());
     return string(__buf);
 }
+
+
+
+int ScanNext(const string& raw, int startPos, char target);
+int ScanNextInSet(const string& raw, int startPos, const set<char>& charSet);
+int ScanNNextInSet(const string& raw, int startPos, const set<char>& charSet, int n);
+int ScanNNext(const string& raw, int startPos, char target, int n);
+int ScanNextUtilNot(const string& raw, int startPos, char target);
+int ScanNextUtilNotInChars(const string& raw, int startPos, const set<char>& target);
+int ScanNextUtilNotInChars(const string& raw, int startPos, const string& target);
+
+
 
 template<typename TOutputIterator>
 void StringToChars(const string& s, TOutputIterator out) {
