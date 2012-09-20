@@ -1,6 +1,10 @@
 #include "StringLib.h"
 
-const set<char>& dof::lib::str::GetCommonBlankChars() {
+namespace dof {
+namespace lib {
+namespace str {
+
+const set<char>& GetCommonBlankChars() {
     static set<char> __chars;
     static bool __isInit = false;
     if(!__isInit) {
@@ -30,47 +34,47 @@ string __inside_strip(const string& s, const set<char>& chars, bool isLstrip, bo
     return s.substr(i, j-i+1);
 }
 
-string dof::lib::str::Lstrip(const string& s, const set<char>& chars) {
+string Lstrip(const string& s, const set<char>& chars) {
     return __inside_strip(s, chars, true, false);
 }
 
-string dof::lib::str::Rstrip(const string& s, const set<char>& chars) {
+string Rstrip(const string& s, const set<char>& chars) {
     return __inside_strip(s, chars, false, true);
 }
 
-string dof::lib::str::Strip(const string& s, const set<char>& chars) {
+string Strip(const string& s, const set<char>& chars) {
     return __inside_strip(s, chars, true, true);
 }
 
-char dof::lib::str::ToUpper(char c) {
+char ToUpper(char c) {
     if('a' <= c && c <= 'z') 
 	return c ^ 32;
 
     return c;
 }
 
-char dof::lib::str::ToLower(char c) {
+char ToLower(char c) {
     if('A' <= c && c <= 'Z') 
 	return c | 32;
 
     return c;
 }
 
-string dof::lib::str::ToUpperString(const string& s) {
+string ToUpperString(const string& s) {
     string d;
     d.resize(s.size());
     transform(s.begin(), s.end(), d.begin(), ToUpper);
     return d;
 }
 
-string dof::lib::str::ToLowerString(const string& s) {
+string ToLowerString(const string& s) {
     string d;
     d.resize(s.size());
     transform(s.begin(), s.end(), d.begin(), ToLower);
     return d;
 }
 
-bool dof::lib::str::IsHex(char c) {
+bool IsHex(char c) {
     if( '0' <= c && c <= '9' ||
 	'a' <= c && c <= 'f' ||
 	'A' <= c && c <= 'F' ) {
@@ -79,7 +83,7 @@ bool dof::lib::str::IsHex(char c) {
     return false;
 }
 
-bool dof::lib::str::IsOnlyHex(const string& s) {
+bool IsOnlyHex(const string& s) {
     const char *raw = s.c_str();
     for(int i=0,l=s.length();i<l;++i) {
 	if(!IsHex(raw[i])) {
@@ -89,7 +93,7 @@ bool dof::lib::str::IsOnlyHex(const string& s) {
     return true;
 }
 
-char dof::lib::str::Dec2Hex(int c) {
+char Dec2Hex(int c) {
     if(0 <= c && c <= 9) {
 	return c + '0';
     }
@@ -101,7 +105,7 @@ char dof::lib::str::Dec2Hex(int c) {
     }
 }
 
-int dof::lib::str::Hex2Dec(char c) {
+int Hex2Dec(char c) {
     if('0' <= c && c <= '9') {
 	return c - '0';
     }
@@ -116,7 +120,7 @@ int dof::lib::str::Hex2Dec(char c) {
     }
 }
 
-unsigned long long dof::lib::str::HexDec(const string& raw) {
+unsigned long long HexDec(const string& raw) {
     int offset = 0, l = raw.length();
     char c;
     unsigned long long ret = 0;
@@ -138,11 +142,11 @@ unsigned long long dof::lib::str::HexDec(const string& raw) {
     return ret;
 }
 
-bool dof::lib::str::IsDigit(char c) {
+bool IsDigit(char c) {
     return '0' <= c && c <= '9';
 }
 
-bool dof::lib::str::IsOnlyDigit(const string& s) {
+bool IsOnlyDigit(const string& s) {
     const char *raw = s.c_str();
     for(int i=0,l=s.length();i<l;++i) {
 	if(!IsDigit(raw[i])) {
@@ -152,7 +156,7 @@ bool dof::lib::str::IsOnlyDigit(const string& s) {
     return true;
 }
 
-bool dof::lib::str::FindAnyChar(const string& target, const string& findingChars) {
+bool FindAnyChar(const string& target, const string& findingChars) {
     size_t p;
     char c;
     for(int i=0,l=target.length();i<l;++i) {
@@ -165,7 +169,7 @@ bool dof::lib::str::FindAnyChar(const string& target, const string& findingChars
     return false;
 }
 
-int dof::lib::str::ScanNext(const string& raw, int startPos, char target) {
+int ScanNext(const string& raw, int startPos, char target) {
     int i, l=raw.length();
     for(i=startPos;i<l;++i) {
 	if(raw[i] == target) {
@@ -175,7 +179,7 @@ int dof::lib::str::ScanNext(const string& raw, int startPos, char target) {
    return i;
 }
 
-int dof::lib::str::ScanNextInSet(const string& raw, int startPos, const set<char>& charSet) {
+int ScanNextInSet(const string& raw, int startPos, const set<char>& charSet) {
     int i, j, l=raw.length(), ls=charSet.size();
     for(i=startPos;i<l;++i) {
 	char c = raw[i];
@@ -186,7 +190,7 @@ int dof::lib::str::ScanNextInSet(const string& raw, int startPos, const set<char
     return i;
 }
 
-int dof::lib::str::ScanNNextInSet(const string& raw, int startPos, const set<char>& charSet, int n) {
+int ScanNNextInSet(const string& raw, int startPos, const set<char>& charSet, int n) {
     int i, l=raw.length(), p=startPos, q=p;
     for(int j=0;j<n;++j) {
 	q = ScanNextInSet(raw, p, charSet);
@@ -196,7 +200,7 @@ int dof::lib::str::ScanNNextInSet(const string& raw, int startPos, const set<cha
     return q;
 }
 
-int dof::lib::str::ScanNNext(const string& raw, int startPos, char target, int n) {
+int ScanNNext(const string& raw, int startPos, char target, int n) {
     int i, l=raw.length(), p=startPos, q=p;
     for(int j=0;j<n;++j) {
 	q = ScanNext(raw, p, target);
@@ -206,7 +210,7 @@ int dof::lib::str::ScanNNext(const string& raw, int startPos, char target, int n
     return q;
 }
 
-int dof::lib::str::ScanNextUtilNot(const string& raw, int startPos, char target) {
+int ScanNextUtilNot(const string& raw, int startPos, char target) {
     int i, l=raw.length();
     for(i=startPos;i<l;++i) {
 	if(raw[i] != target) {
@@ -216,7 +220,7 @@ int dof::lib::str::ScanNextUtilNot(const string& raw, int startPos, char target)
     return i;
 }
 
-int dof::lib::str::ScanNextUtilNotInChars(const string& raw, int startPos, const set<char>& target) {
+int ScanNextUtilNotInChars(const string& raw, int startPos, const set<char>& target) {
     int i, l=raw.length();
     for(i=startPos;i<l;++i) {
 	if(target.find(raw[i]) == target.end()) {
@@ -226,10 +230,58 @@ int dof::lib::str::ScanNextUtilNotInChars(const string& raw, int startPos, const
     return i;
 }
 
-int dof::lib::str::ScanNextUtilNotInChars(const string& raw, int startPos, const string& target) {
+int ScanNextUtilNotInChars(const string& raw, int startPos, const string& target) {
     set<char> s;
     for(string::const_iterator it=target.begin();it!=target.end();++it) {
 	s.insert(*it);
     }
     return ScanNextUtilNotInChars(raw, startPos, s);
 }
+
+template<>
+bool StringToMap<string, string>(const string& s, map<string, string>& output, char sep, char kvSep, bool isReset) {
+    if(isReset) {
+	output.clear();
+    }
+
+    int l=s.length();
+    if(0 == l) {
+	return true;
+    }
+
+    int p,q=0;
+    p = (sep == s[0]) ? 1 : 0;
+    int kStart, kLength, vStart, vLength;
+    set<char> charSet;
+    charSet.insert(kvSep);
+    charSet.insert(sep);
+    //如果最后一个字符是sep，那么也接受，而且结束解析
+    //每一次循环开始,p表示key的第一个字符位置，q表示上一轮中sep的位置
+    while(q < l-1) { 
+	//这一步正确预期是碰到kvSep，中间所有的sep都会被当作key的一部分
+	q = ScanNext(s, p, kvSep);
+	if(q >= l || s[q] == sep) { 
+	    output.clear(); //注意这里一旦出错，会把集合中原有的数据也清空
+	    return false;
+	}
+	kStart = p;
+	kLength = q-p;
+
+	p = q+1;
+	//这一步正确预期是碰到sep，中间所有的kvSep都当作value的一部分
+	q = ScanNext(s, p, sep);
+	if(q > l) { // 这里就允许了最后的key对应空的value
+	    return false;
+	}
+	vStart = p;
+	vLength = q-p;
+
+	output[s.substr(kStart, kLength)] = s.substr(vStart, vLength);
+	p = q+1;
+    }
+    return true;
+}
+
+}; // namespace str
+}; // namespace lib
+}; // namespace dof

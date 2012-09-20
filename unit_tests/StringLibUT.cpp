@@ -359,6 +359,78 @@ void TestScanNextUtilNotInChars() {
     */
 }
 
+void TestStringToMap() {
+    string s;
+    map<string, string> output;
+    bool isSuccess;
+
+    s = "+a^123+abc^kkk+92^dfjdjfd";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( "123" == output["a"] );
+    DOF_UT_CHECK( "kkk" == output["abc"] );
+    DOF_UT_CHECK( "dfjdjfd" == output["92"] );
+    DOF_UT_CHECK( 3 == output.size() );
+    
+    s = "";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 0 == output.size() );
+    
+    s = "+";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 0 == output.size() );
+
+    s = "++";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( false == isSuccess );
+    DOF_UT_CHECK( 0 == output.size() );
+
+    s = "++abc^sds";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 1 == output.size() );
+    DOF_UT_CHECK( "sds" == output["+abc"] );
+
+    s = "+abc^sds++";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( false == isSuccess );
+    DOF_UT_CHECK( 0 == output.size() );
+    
+    s = "+novalue^+34343^sss";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( "" == output["novalue"] );
+    DOF_UT_CHECK( "sss" == output["34343"] );
+
+    s = "+novalue^+34+343^sss";
+    isSuccess = StringToMap<string,string>(s, output);
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( "" == output["novalue"] );
+    DOF_UT_CHECK( "sss" == output["34+343"] );
+
+    //这个例子特点是KV分隔符出现在VALUE中
+    s = "udid:42731dc4c6ff5dda59a4186986323c9bcfb2dc7a,orientation:ipad_orientation_portrait,access_token:745c428f52d401679b938239882abd7d,mac_address:70:DE:E2:C4:67:B4";
+    isSuccess = StringToMap<string,string>(s, output, ',', ':');
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 4 == output.size() );
+    DOF_UT_CHECK( "42731dc4c6ff5dda59a4186986323c9bcfb2dc7a" == output["udid"] );
+    DOF_UT_CHECK( "ipad_orientation_portrait" == output["orientation"] );
+    DOF_UT_CHECK( "745c428f52d401679b938239882abd7d" == output["access_token"] );
+    DOF_UT_CHECK( "70:DE:E2:C4:67:B4" == output["mac_address"] );
+
+    //这个例子特点是最后一个字符是分割符
+    s = "udid:42731dc4c6ff5dda59a4186986323c9bcfb2dc7a,orientation:ipad_orientation_portrait,access_token:745c428f52d401679b938239882abd7d,mac_address:70:DE:E2:C4:67:B4,";
+    isSuccess = StringToMap<string,string>(s, output, ',', ':');
+    DOF_UT_CHECK( true == isSuccess );
+    DOF_UT_CHECK( 4 == output.size() );
+    DOF_UT_CHECK( "42731dc4c6ff5dda59a4186986323c9bcfb2dc7a" == output["udid"] );
+    DOF_UT_CHECK( "ipad_orientation_portrait" == output["orientation"] );
+    DOF_UT_CHECK( "745c428f52d401679b938239882abd7d" == output["access_token"] );
+    DOF_UT_CHECK( "70:DE:E2:C4:67:B4" == output["mac_address"] );
+}
+
 int main() {
     TestStrip();   
     TestToLowerAndToUpper();
@@ -370,5 +442,6 @@ int main() {
     TestScanNext();
     TestScanNextUtilNot();
     TestScanNextUtilNotInChars();
+    TestStringToMap();
     return 0;
 }

@@ -185,7 +185,10 @@ string MapToString(const map<K,V>& target, char sep='+', char kvSep='^') {
     return ss.str();
 }
 
-}; // namespace string
+template<typename K, typename V>
+bool StringToMap(const string& s, map<K,V>& output, char sep='+', char kvSep='^', bool isReset=true);
+
+}; // namespace str
 }; // namespace lib
 }; // namespace dof
 
