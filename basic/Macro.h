@@ -46,4 +46,12 @@ inline static string memberName() {\
     return __value;\
 }
 
+#define COUNT_TIME_START(id) \
+    ptime start##id = second_clock::local_time();
+
+#define COUNT_TIME_END(id) \
+    ptime end##id = second_clock::local_time();\
+    time_duration td##id = end##id - start##id;\
+    cout << #id << " time use:" << to_simple_string(td##id) << endl;
+
 #endif // DOF_MACRO_H_
