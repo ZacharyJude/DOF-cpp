@@ -1,9 +1,8 @@
-#ifndef PARALLEL_ALGORITHM_H_
-#define PARALLEL_ALGORITHM_H_
-
 #include <boost/mpi/environment.hpp>
 #include <boost/mpi/communicator.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -14,8 +13,18 @@
 using namespace std;
 using namespace boost;
 using namespace boost::mpi;
+using namespace boost::posix_time;
 
 typedef long long int lli;
+
+#define COUNT_TIME_START(id) \
+	ptime start##id = second_clock::local_time();
+
+#define COUNT_TIME_END(id) \
+	ptime end##id = second_clock::local_time();\
+	time_duration td##id = end##id - start##id;\
+	cout << #id << " time use:" << to_simple_string(td##id) << endl;
+
 template<typename TInt>
 void GetPartionArgs(TInt totalLength, TInt myRank, TInt partsCount, TInt& myStart, TInt& myLength) {
     TInt groupSize = (TInt)(totalLength / partsCount);
@@ -85,6 +94,7 @@ void ParallelOddEvenSort(lli myRank, lli worldSize, vector<TNumber>& initNumbers
 }
 
 int main(int argc, char *argv[]) {
+    COUNT_TIME_START(global);
     environment env(argc, argv);
     communicator world;
     lli totalNumbers = lexical_cast<lli>(string(argv[1]));
@@ -94,19 +104,25 @@ int main(int argc, char *argv[]) {
 
     vector<lli> initNumbers;
     GetPartionArgs<lli>(totalNumbers, myRank, worldSize, myStart, myLength);
+    COUNT_TIME_START(load_file);
     LoadDataFromFile("number_to_sort", myStart, myLength, totalNumbers, initNumbers);
-    stable_sort(initNumbers.begin(), initNumbers.end());
+    COUNT_TIME_END(load_file);
+    COUNT_TIME_START(parallel_sorting);
+    sort(initNumbers.begin(), initNumbers.end());
     ParallelOddEvenSort(myRank, worldSize, initNumbers, world);
+    COUNT_TIME_END(parallel_sorting);
 
+    COUNT_TIME_START(write_result);
     stringstream ss;
     ss << "number_sorted_part." << myRank;
-    ofstream fout(ss.str().c_str(), ios::out);
+    FILE *out = fopen(ss.str().c_str(), "w");
     for(vector<lli>::const_iterator it0=initNumbers.begin();it0!=initNumbers.end();++it0) {
-	fout << *it0 << endl;
+	fprintf(out, "%ld\n", *it0);
     }
-    fout.close();
+    fclose(out);
+    out = NULL;
+    COUNT_TIME_END(write_result);
+    COUNT_TIME_END(global);
 
     return 0;
 }
-
-#endif //PARALLEL_ALGORITHM_H_
