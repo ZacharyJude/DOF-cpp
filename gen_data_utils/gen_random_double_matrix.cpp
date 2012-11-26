@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
     int nRow = lexical_cast<int>(string(argv[1]));
     int nCol = lexical_cast<int>(string(argv[2]));
     srand(time(0));
+    printf("%d %d\n", nRow, nCol);
     for(int i=0;i<nRow;++i) {
 	for(int j=0;j<nCol;++j) {
 	    double val = (double)(rand() % 1000001) / (double)1000000;

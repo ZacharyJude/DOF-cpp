@@ -15,6 +15,26 @@ void Append(vector<T>& v1, const vector<T>& v2) {
     }
 }
 
+template<typename TFirst, typename TSecond>
+bool SecondMainPairCmp(const pair<TFirst, TSecond>& p1, const pair<TFirst, TSecond>& p2) {
+    return p1.first == p2.first ? p1.second < p2.second : p1.first < p2.first;
+}
+
+template<typename TFirst, typename TSecond>
+bool FirstMainPairCmp(const pair<TFirst, TSecond>& p1, const pair<TFirst, TSecond>& p2) {
+    return p1.second == p2.second ? p1.first < p2.first : p1.second < p2.second;
+}
+
+template<typename TFirst, typename TSecond>
+bool SecondOnlyPairCmp(const pair<TFirst, TSecond>& p1, const pair<TFirst, TSecond>& p2) {
+    return p1.second < p2.second;
+}
+
+template<typename TFirst, typename TSecond>
+bool FirstOnlyPairCmp(const pair<TFirst, TSecond>& p1, const pair<TFirst, TSecond>& p2) {
+    return p1.first < p2.first;
+}
+
 }; // namespace stl
 }; // namespace lib
 }; // namespace dof
