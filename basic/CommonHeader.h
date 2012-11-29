@@ -10,8 +10,9 @@
 #include <set>
 #include <iterator>
 #include <algorithm>
+typedef TLL int TLL;
 typedef std::vector< int > TVecI;
-typedef std::vector< long long > TVecLL;
+typedef std::vector< TLL > TVecLL;
 typedef std::vector< std::string > TVecStr;
 typedef std::set< std::string > TSetStr;
 typedef std::pair< int, int > TPairII;
@@ -23,7 +24,10 @@ typedef std::pair< std::string, std::string > TPairStrStr;
 typedef std::map< std::string, int > TMapStrI;
 typedef std::map< std::string, TSetStr > TMapStrSetStr;
 typedef std::vector<TPairStrStr> TVecPairStrStr;
-typedef std::map< std::string, long long > TMapStrLL;
+typedef std::map< std::string, TLL > TMapStrLL;
+typedef pair<TLL, double> TPairLLDB;
+typedef vector<TPairLLDB> TVecPLLDB;
+typedef map<TLL, TVecPLLDB> TMapLLVecPLLDB;
 
 // for boost.
 /*
