@@ -1,5 +1,5 @@
-#ifndef DOF_PARALLEL_PARALLEL_UTIL_H_
-#define DOF_PARALLEL_PARALLEL_UTIL_H_
+#ifndef DOF_PARALLEL_UTIL_H_
+#define DOF_PARALLEL_UTIL_H_
 
 namespace dof {
 namespace parallel {
@@ -15,4 +15,4 @@ void GetPartionArgs(TInt totalLength, TInt myRank, TInt partsCount, TInt& myStar
 } // namespace parallel
 } // namespace dof
 
-#endif //DOF_PARALLEL_PARALLEL_UTIL_H_
+#endif //DOF_PARALLEL_UTIL_H_

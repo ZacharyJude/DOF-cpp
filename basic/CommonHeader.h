@@ -10,27 +10,9 @@
 #include <set>
 #include <iterator>
 #include <algorithm>
-typedef TLL int TLL;
-typedef std::vector< int > TVecI;
-typedef std::vector< TLL > TVecLL;
-typedef std::vector< std::string > TVecStr;
-typedef std::set< std::string > TSetStr;
-typedef std::pair< int, int > TPairII;
-typedef std::pair< std::string, std::string> TPairStrStr;
-typedef std::map< int, int > TMapII;
-typedef std::map< std::string, std::string > TMapStrStr;
-typedef std::map< std::string, int> TMapStrI;
-typedef std::pair< std::string, std::string > TPairStrStr;
-typedef std::map< std::string, int > TMapStrI;
-typedef std::map< std::string, TSetStr > TMapStrSetStr;
-typedef std::vector<TPairStrStr> TVecPairStrStr;
-typedef std::map< std::string, TLL > TMapStrLL;
-typedef pair<TLL, double> TPairLLDB;
-typedef vector<TPairLLDB> TVecPLLDB;
-typedef map<TLL, TVecPLLDB> TMapLLVecPLLDB;
+using namespace std;
 
 // for boost.
-/*
 #include <boost/regex.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/construct.hpp>
@@ -52,7 +34,29 @@ using namespace boost::gregorian;
 using namespace boost::posix_time;
 using namespace boost::filesystem;
 using namespace boost::archive;
-*/
+
+namespace dof {
+
+typedef long long int TLL;
+typedef vector< int > TVecI;
+typedef vector< TLL > TVecLL;
+typedef vector< string > TVecStr;
+typedef set< string > TSetStr;
+typedef pair< int, int > TPairII;
+typedef pair< string, string> TPairStrStr;
+typedef map< int, int > TMapII;
+typedef map< string, string > TMapStrStr;
+typedef map< string, int> TMapStrI;
+typedef pair< string, string > TPairStrStr;
+typedef map< string, int > TMapStrI;
+typedef map< string, TSetStr > TMapStrSetStr;
+typedef vector<TPairStrStr> TVecPairStrStr;
+typedef map< string, TLL > TMapStrLL;
+typedef pair<TLL, double> TPairLLDB;
+typedef vector<TPairLLDB> TVecPLLDB;
+typedef map<TLL, TVecPLLDB> TMapLLVecPLLDB;
+
+} // namespace dof
 
 #include "Macro.h"
 
