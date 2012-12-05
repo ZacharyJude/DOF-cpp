@@ -49,6 +49,8 @@ const set<char>& GetCommonBlankChars();
 string Strip(const string& s, const set<char>& = GetCommonBlankChars());
 string Lstrip(const string& s, const set<char>& = GetCommonBlankChars());
 string Rstrip(const string& s, const set<char>& = GetCommonBlankChars());
+inline bool Split(const string& s, string& first, string& second, char sep='+');
+inline bool Split(const string& s, string& first, string& second, string& third, char sep='+');
 
 char ToUpper(char c);
 char ToLower(char c);

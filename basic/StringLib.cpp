@@ -282,6 +282,27 @@ bool StringToMap<string, string>(const string& s, map<string, string>& output, c
     return true;
 }
 
+inline bool Split(const string& s, string& first, string& second, char sep) {
+    static TVecStr __parts;
+    if(!StringToCollection(s, __parts, sep, true) || __parts.size() != 2) {
+	return false;
+    }
+    first = __parts[0];
+    second = __parts[1];
+    return true;
+}
+
+inline bool Split(const string& s, string& first, string& second, string& third, char sep) {
+    static TVecStr __parts;
+    if(!StringToCollection(s, __parts, sep, true) || __parts.size() != 3) {
+	return false;
+    }
+    first = __parts[0];
+    second = __parts[1];
+    third = __parts[2];
+    return true;
+}
+
 }; // namespace str
 }; // namespace lib
 }; // namespace dof

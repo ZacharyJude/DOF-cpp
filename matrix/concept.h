@@ -12,6 +12,79 @@ namespace matrix {
 typedef class SparseMatrix {
 public:
     TMapLLVecPLLDB _store;
+    typedef vector< pair<TLL, double> > TRow;
+    
+    static TRow& Empty() {
+	static TRow __empty;
+	return __empty;
+    }
+
+    void Set(TLL r, TLL c, double value) {
+	this->_store[r].push_back(make_pair(c, value));
+    }
+
+    TRow& GetRow(TLL r) {
+	TMapLLVecPLLDB::const_iterator findRow = this->_store.find(r);
+	if(findRow == this->_store.end()) {
+	    return Empty();
+	}
+	return this->_store[r];
+    }
+
+    void WriteToTextFileRowForm(const string& fileName) const {
+	FILE *out = fopen(fileName.c_str(), "w");
+	if(NULL == out) {
+	    cerr << "cannot open file:" << fileName << ", writing sparse matrix to file fails."  << endl;
+	    return;
+	}
+	for(TMapLLVecPLLDB::const_iterator it0=this->_store.begin();it0!=this->_store.end();++it0) {
+	    const TVecPLLDB& row = it0->second;
+	    TLL rowID = it0->first;
+	    fprintf(out, "%ld\t", rowID);
+	    for(TLL i=0,l=row.size();i<l;++i) {
+		const TPairLLDB& p = row[i];
+		TLL column = p.first;
+		double weight = p.second;
+		fprintf(out, "%ld^%lf", column, weight);
+		if(i+1 < l) {
+		    fprintf(out, "+");
+		}
+	    }
+	    fprintf(out, "\n");
+	}
+	fclose(out);
+    }
+
+    void LoadFromTextFileRowForm(const string& fileName) {
+	ifstream fin(fileName.c_str(), ios::in);
+	string line;
+	TVecStr parts0, parts1, parts2;
+	while(!fin.eof()) {
+	    getline(fin, line);
+	    if("" == line) {
+		continue;
+	    }
+	    string rowIDStr, columnsStr;
+	    if(!Split(line, rowIDStr, columnsStr, '\t')) {
+		cerr << "error while loading data line:" << line << endl;
+		throw;
+	    }
+	    if(!StringToCollection(parts0[1], parts1, '+', true)) {
+		cerr << "error while parsing columns:" << parts0[1] << endl;
+		throw;
+	    }
+	    string columnIDStr, weightStr;
+	    for(TVecStr::const_iterator it0=parts1.begin();it0!=parts1.end();++it0) {
+		if(!Split(*it0, columnIDStr, weightStr, '^')) {
+		    cerr << "error while parsing column-weight:" << *it0 << endl;
+		    throw;
+		}
+		this->Set(lexical_cast<TLL>(rowIDStr), lexical_cast<TLL>(columnIDStr), lexical_cast<double>(weightStr));
+	    }
+	}
+	fin.close();
+    }
+
 } SparseMatrix;
 
 typedef class NormalMatrix {
