@@ -44,6 +44,7 @@ typedef vector< string > TVecStr;
 typedef set< string > TSetStr;
 typedef set< TLL > TSetLL;
 typedef pair< int, int > TPairII;
+typedef pair< TLL, TLL > TPairLLLL;
 typedef pair< string, string> TPairStrStr;
 typedef pair<TLL, double> TPairLLDB;
 typedef map< int, int > TMapII;
@@ -56,9 +57,12 @@ typedef map< string, int > TMapStrI;
 typedef map< string, TSetStr > TMapStrSetStr;
 typedef vector<TPairStrStr> TVecPairStrStr;
 typedef vector<TPairLLDB> TVecPLLDB;
+typedef vector<TPairLLLL> TVecPLLLL;
 typedef map<TLL, TMapLLDB> TMapLLMapLLDB;
 typedef map<TLL, TVecPLLDB> TMapLLVecPLLDB;
 typedef map<TLL, TMapLLLL> TMapLLMapLLLL;
+typedef map< TLL, TSetLL > TMapLLSetLL;
+typedef map< TLL, TPairLLDB > TMapLLPLLDB;
 
 } // namespace dof
 

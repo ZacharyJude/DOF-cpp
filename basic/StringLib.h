@@ -49,8 +49,8 @@ const set<char>& GetCommonBlankChars();
 string Strip(const string& s, const set<char>& = GetCommonBlankChars());
 string Lstrip(const string& s, const set<char>& = GetCommonBlankChars());
 string Rstrip(const string& s, const set<char>& = GetCommonBlankChars());
-inline bool Split(const string& s, string& first, string& second, char sep='+');
-inline bool Split(const string& s, string& first, string& second, string& third, char sep='+');
+bool Split(const string& s, string& first, string& second, char sep='+');
+bool Split(const string& s, string& first, string& second, string& third, char sep='+');
 
 char ToUpper(char c);
 char ToLower(char c);
@@ -145,8 +145,8 @@ bool StringToCollectionEscape(const string& s, TCollection& output, char sep='+'
     return isSuccess;
 }
 
-template<typename TOutputIterator>
-bool OutputSeparateString(const string& s, TOutputIterator out, char sep='+') {
+template<typename TInserter>
+bool OutputSeparateString(const string& s, TInserter out, char sep='+') {
     int l=s.length();
     if(0 == l) {
 	return true;
@@ -158,7 +158,7 @@ bool OutputSeparateString(const string& s, TOutputIterator out, char sep='+') {
 	if(q > l) {
 	    return false;
 	}
-	*out = s.substr(p,q-p);
+	*out = lexical_cast<typename TInserter::container_type::value_type>(s.substr(p,q-p));
 	++out;
 	p = q+1;
     }
@@ -189,6 +189,34 @@ string MapToString(const map<K,V>& target, char sep='+', char kvSep='^') {
 
 template<typename K, typename V>
 bool StringToMap(const string& s, map<K,V>& output, char sep='+', char kvSep='^', bool isReset=true);
+
+template<typename TCollection>
+void CollectionToString(const TCollection& target, string& out, char sep='+', bool withLeadingSep=true) {
+    stringstream ss;
+    int size = target.size(), cnt = 0;
+
+    if(0 == size) {
+	out = "";
+	return;
+    }
+
+    if(withLeadingSep) {
+	ss << sep;
+    }
+
+    typename TCollection::const_iterator it;
+    for(it=target.begin();it!=target.end();++it) {
+	++cnt;
+	if(cnt == size) {
+	    break;
+	}
+	ss << *it << sep;
+    }
+
+    ss << *it;
+    out = ss.str();
+    return;
+}
 
 }; // namespace str
 }; // namespace lib
